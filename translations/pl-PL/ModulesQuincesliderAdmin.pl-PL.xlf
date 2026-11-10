@@ -1,0 +1,428 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en-US" target-language="pl-PL" datatype="plaintext" original="ModulesQuincesliderAdmin">
+    <body>
+
+      <!-- Moduł -->
+      <trans-unit id="quince.slider.name">
+        <source>Quince slider</source>
+        <target>Quince: slider</target>
+      </trans-unit>
+      <trans-unit id="quince.slider.description">
+        <source>A band of slides for the top of the page: colour, gradient, photo or video.</source>
+        <target>Pas slajdów na górę strony: kolor, gradient, zdjęcie albo wideo.</target>
+      </trans-unit>
+      <trans-unit id="quince.slider.uninstall">
+        <source>Uninstall the module? The slides will be removed.</source>
+        <target>Odinstalować moduł? Slajdy zostaną usunięte.</target>
+      </trans-unit>
+      <trans-unit id="quince.slider.nav">
+        <source>Slider</source>
+        <target>Slider</target>
+      </trans-unit>
+      <trans-unit id="quince.slider.csrf">
+        <source>Invalid security token, please try again.</source>
+        <target>Nieprawidłowy token bezpieczeństwa, spróbuj ponownie.</target>
+      </trans-unit>
+      <trans-unit id="quince.slider.saved">
+        <source>Settings saved.</source>
+        <target>Ustawienia zapisane.</target>
+      </trans-unit>
+      <trans-unit id="quince.slider.save">
+        <source>Save changes</source>
+        <target>Zapisz zmiany</target>
+      </trans-unit>
+
+      <!-- Opis slajdu w zwiniętym pasku (części łączone kropką) -->
+      <trans-unit id="quince.slider.sum.no_title">
+        <source>no heading</source>
+        <target>bez nagłówka</target>
+      </trans-unit>
+      <trans-unit id="quince.slider.sum.slide">
+        <source>Slide</source>
+        <target>Slajd</target>
+      </trans-unit>
+      <trans-unit id="quince.slider.sum.claims">
+        <source>claims</source>
+        <target>haseł</target>
+      </trans-unit>
+      <trans-unit id="quince.slider.sum.buttons">
+        <source>buttons</source>
+        <target>przycisków</target>
+      </trans-unit>
+      <trans-unit id="quince.slider.sum.video">
+        <source>video</source>
+        <target>wideo</target>
+      </trans-unit>
+      <trans-unit id="quince.slider.sum.photo">
+        <source>photo</source>
+        <target>zdjęcie</target>
+      </trans-unit>
+      <trans-unit id="quince.slider.sum.gradient">
+        <source>gradient</source>
+        <target>gradient</target>
+      </trans-unit>
+      <trans-unit id="quince.slider.sum.colour">
+        <source>colour</source>
+        <target>kolor</target>
+      </trans-unit>
+      <trans-unit id="quince.slider.sum.panel">
+        <source>in a panel</source>
+        <target>w panelu</target>
+      </trans-unit>
+      <trans-unit id="quince.slider.sum.centred">
+        <source>centred</source>
+        <target>wyśrodkowany</target>
+      </trans-unit>
+      <trans-unit id="quince.slider.sum.with_media">
+        <source>with a photo beside</source>
+        <target>ze zdjęciem obok</target>
+      </trans-unit>
+
+      <!-- Ekran -->
+      <trans-unit id="quince.slider.intro">
+        <source>A slide has three things that do not depend on each other: a background, a content layout and the content itself. The band appears wherever the home page puts the slider hook.</source>
+        <target>Slajd składa się z trzech niezależnych od siebie części: tła, układu treści i samej treści. Pas pojawia się tam, gdzie strona główna ma hook slidera.</target>
+      </trans-unit>
+
+      <!-- Karta: pas -->
+      <trans-unit id="quince.slider.band">
+        <source>The band</source>
+        <target>Pas</target>
+      </trans-unit>
+      <trans-unit id="quince.slider.height">
+        <source>Height</source>
+        <target>Wysokość</target>
+      </trans-unit>
+      <trans-unit id="quince.slider.width">
+        <source>Width</source>
+        <target>Szerokość</target>
+      </trans-unit>
+      <trans-unit id="quince.slider.interval">
+        <source>Seconds per slide</source>
+        <target>Sekundy na slajd</target>
+      </trans-unit>
+      <trans-unit id="quince.slider.interval_hint">
+        <source>Only matters when the band moves on its own.</source>
+        <target>Ma znaczenie tylko wtedy, gdy pas przewija się sam.</target>
+      </trans-unit>
+      <trans-unit id="quince.slider.autoplay">
+        <source>Moves on its own</source>
+        <target>Przewija się sam</target>
+      </trans-unit>
+      <trans-unit id="quince.slider.arrows">
+        <source>Arrows</source>
+        <target>Strzałki</target>
+      </trans-unit>
+      <trans-unit id="quince.slider.dots">
+        <source>Dots</source>
+        <target>Kropki</target>
+      </trans-unit>
+
+      <!-- Karta: slajdy -->
+      <trans-unit id="quince.slider.slides">
+        <source>Slides</source>
+        <target>Slajdy</target>
+      </trans-unit>
+      <trans-unit id="quince.slider.add_slide">
+        <source>Add a slide</source>
+        <target>Dodaj slajd</target>
+      </trans-unit>
+      <trans-unit id="quince.slider.empty">
+        <source>No slides yet. The band stays hidden until you add one.</source>
+        <target>Nie ma jeszcze slajdów. Pas pozostaje ukryty, dopóki nie dodasz pierwszego.</target>
+      </trans-unit>
+      <trans-unit id="quince.slider.drag">
+        <source>Drag to reorder</source>
+        <target>Przeciągnij, aby zmienić kolejność</target>
+      </trans-unit>
+      <trans-unit id="quince.slider.settings">
+        <source>Settings</source>
+        <target>Ustawienia</target>
+      </trans-unit>
+      <trans-unit id="quince.slider.remove">
+        <source>Remove</source>
+        <target>Usuń</target>
+      </trans-unit>
+
+      <!-- Krok: tło -->
+      <trans-unit id="quince.slider.bg">
+        <source>Background</source>
+        <target>Tło</target>
+      </trans-unit>
+      <trans-unit id="quince.slider.bg_desc">
+        <source>A colour, a gradient, a photo or a video. Each one has its own fields.</source>
+        <target>Kolor, gradient, zdjęcie albo wideo. Każde z nich ma własne pola.</target>
+      </trans-unit>
+      <trans-unit id="quince.slider.bg_kind">
+        <source>Kind</source>
+        <target>Rodzaj</target>
+      </trans-unit>
+      <trans-unit id="quince.slider.bg_colour">
+        <source>Colour</source>
+        <target>Kolor</target>
+      </trans-unit>
+      <trans-unit id="quince.slider.bg_colour_hint">
+        <source>A step of the shop palette (neutral, primary, secondary, promo) from 1 to 12, or a hex code.</source>
+        <target>Stopień palety sklepu (neutral, primary, secondary, promo) od 1 do 12 albo kod hex.</target>
+      </trans-unit>
+      <trans-unit id="quince.slider.bg_from">
+        <source>From</source>
+        <target>Od</target>
+      </trans-unit>
+      <trans-unit id="quince.slider.bg_to">
+        <source>To</source>
+        <target>Do</target>
+      </trans-unit>
+      <trans-unit id="quince.slider.bg_angle">
+        <source>Angle</source>
+        <target>Kąt</target>
+      </trans-unit>
+      <trans-unit id="quince.slider.bg_photo">
+        <source>Photo</source>
+        <target>Zdjęcie</target>
+      </trans-unit>
+      <trans-unit id="quince.slider.bg_fade">
+        <source>Fade the edge</source>
+        <target>Wygaszenie krawędzi</target>
+      </trans-unit>
+      <trans-unit id="quince.slider.bg_video">
+        <source>Video address</source>
+        <target>Adres wideo</target>
+      </trans-unit>
+      <trans-unit id="quince.slider.bg_video_hint">
+        <source>A normal YouTube or Vimeo link. The shop turns it into a muted background video.</source>
+        <target>Zwykły link do YouTube albo Vimeo. Sklep zamieni go w wyciszone wideo w tle.</target>
+      </trans-unit>
+      <trans-unit id="quince.slider.bg_poster">
+        <source>Still image</source>
+        <target>Obraz zastępczy</target>
+      </trans-unit>
+      <trans-unit id="quince.slider.bg_poster_hint">
+        <source>Shown while the video loads.</source>
+        <target>Widoczny, dopóki wideo się wczytuje.</target>
+      </trans-unit>
+      <trans-unit id="quince.slider.bg_veil">
+        <source>Veil</source>
+        <target>Przyciemnienie</target>
+      </trans-unit>
+      <trans-unit id="quince.slider.bg_shade">
+        <source>Darken the whole slide</source>
+        <target>Przyciemnij cały slajd</target>
+      </trans-unit>
+      <trans-unit id="quince.slider.bg_shade_hint">
+        <source>For a photo that fights with the text.</source>
+        <target>Dla zdjęcia, które gryzie się z tekstem.</target>
+      </trans-unit>
+
+      <!-- Krok: treść -->
+      <trans-unit id="quince.slider.content">
+        <source>Content</source>
+        <target>Treść</target>
+      </trans-unit>
+      <trans-unit id="quince.slider.content_desc">
+        <source>A slide can promote a product from the catalogue or say something of its own.</source>
+        <target>Slajd może promować produkt z katalogu albo mówić coś własnego.</target>
+      </trans-unit>
+      <trans-unit id="quince.slider.content_from">
+        <source>Content from</source>
+        <target>Treść z</target>
+      </trans-unit>
+      <trans-unit id="quince.slider.product_id">
+        <source>Product id</source>
+        <target>Numer produktu</target>
+      </trans-unit>
+      <trans-unit id="quince.slider.product_hint">
+        <source>Name, sentence, price, photo and the button address come from the catalogue.</source>
+        <target>Nazwa, zdanie, cena, zdjęcie i adres przycisku pochodzą z katalogu.</target>
+      </trans-unit>
+      <trans-unit id="quince.slider.catalogue_text">
+        <source>Catalogue text</source>
+        <target>Tekst z katalogu</target>
+      </trans-unit>
+      <trans-unit id="quince.slider.override">
+        <source>Say it differently on this slide</source>
+        <target>Napisz to inaczej na tym slajdzie</target>
+      </trans-unit>
+      <trans-unit id="quince.slider.overline">
+        <source>Overline</source>
+        <target>Nadtytuł</target>
+      </trans-unit>
+      <trans-unit id="quince.slider.heading">
+        <source>Heading</source>
+        <target>Nagłówek</target>
+      </trans-unit>
+      <trans-unit id="quince.slider.sentence">
+        <source>Sentence</source>
+        <target>Zdanie</target>
+      </trans-unit>
+      <trans-unit id="quince.slider.price">
+        <source>Price</source>
+        <target>Cena</target>
+      </trans-unit>
+      <trans-unit id="quince.slider.price_before">
+        <source>Price before</source>
+        <target>Cena przed obniżką</target>
+      </trans-unit>
+      <trans-unit id="quince.slider.timer">
+        <source>Counts down to</source>
+        <target>Odlicza do</target>
+      </trans-unit>
+      <trans-unit id="quince.slider.claims">
+        <source>Short claims</source>
+        <target>Krótkie hasła</target>
+      </trans-unit>
+      <trans-unit id="quince.slider.add_claim">
+        <source>Add a claim</source>
+        <target>Dodaj hasło</target>
+      </trans-unit>
+      <trans-unit id="quince.slider.buttons">
+        <source>Buttons</source>
+        <target>Przyciski</target>
+      </trans-unit>
+      <trans-unit id="quince.slider.add_button">
+        <source>Add a button</source>
+        <target>Dodaj przycisk</target>
+      </trans-unit>
+
+      <!-- Krok: układ -->
+      <trans-unit id="quince.slider.layout">
+        <source>Layout</source>
+        <target>Układ</target>
+      </trans-unit>
+      <trans-unit id="quince.slider.layout_desc">
+        <source>Where the content sits and how it is aligned. Independent of the background.</source>
+        <target>Gdzie stoi treść i jak jest wyrównana. Niezależnie od tła.</target>
+      </trans-unit>
+      <trans-unit id="quince.slider.aligned">
+        <source>Aligned</source>
+        <target>Wyrównanie</target>
+      </trans-unit>
+      <trans-unit id="quince.slider.text">
+        <source>Text</source>
+        <target>Tekst</target>
+      </trans-unit>
+      <trans-unit id="quince.slider.light">
+        <source>Light, for a dark background</source>
+        <target>Jasny, na ciemne tło</target>
+      </trans-unit>
+      <trans-unit id="quince.slider.media">
+        <source>Photo beside the text</source>
+        <target>Zdjęcie obok tekstu</target>
+      </trans-unit>
+      <trans-unit id="quince.slider.media_hint">
+        <source>Leave it empty and the text takes the whole slide.</source>
+        <target>Zostaw puste, a tekst zajmie cały slajd.</target>
+      </trans-unit>
+      <trans-unit id="quince.slider.media_share">
+        <source>Photo takes</source>
+        <target>Zdjęcie zajmuje</target>
+      </trans-unit>
+      <trans-unit id="quince.slider.media_share_hint">
+        <source>percent of the slide</source>
+        <target>procent slajdu</target>
+      </trans-unit>
+
+      <!-- Przycisk na slajdzie -->
+      <trans-unit id="quince.slider.btn_label">
+        <source>Label</source>
+        <target>Napis</target>
+      </trans-unit>
+      <trans-unit id="quince.slider.btn_address">
+        <source>Address</source>
+        <target>Adres</target>
+      </trans-unit>
+      <trans-unit id="quince.slider.btn_style">
+        <source>Style</source>
+        <target>Styl</target>
+      </trans-unit>
+
+      <!-- Opcje wyboru z Settings/Slides.php: tłumaczone przez zmienną w szablonie. -->
+      <trans-unit id="quince.slider.opt.bg_gradient">
+        <source>Gradient</source>
+        <target>Gradient</target>
+      </trans-unit>
+      <trans-unit id="quince.slider.opt.bg_video">
+        <source>Video</source>
+        <target>Wideo</target>
+      </trans-unit>
+      <trans-unit id="quince.slider.opt.fade_none">
+        <source>None</source>
+        <target>Brak</target>
+      </trans-unit>
+      <trans-unit id="quince.slider.opt.fade_start">
+        <source>On the left</source>
+        <target>Z lewej</target>
+      </trans-unit>
+      <trans-unit id="quince.slider.opt.fade_end">
+        <source>On the right</source>
+        <target>Z prawej</target>
+      </trans-unit>
+      <trans-unit id="quince.slider.opt.fade_x">
+        <source>On both sides</source>
+        <target>Z obu stron</target>
+      </trans-unit>
+      <trans-unit id="quince.slider.opt.fade_bottom">
+        <source>At the bottom</source>
+        <target>Na dole</target>
+      </trans-unit>
+      <trans-unit id="quince.slider.opt.layout_full">
+        <source>Across the slide</source>
+        <target>Na całym slajdzie</target>
+      </trans-unit>
+      <trans-unit id="quince.slider.opt.layout_split">
+        <source>In a panel</source>
+        <target>W panelu</target>
+      </trans-unit>
+      <trans-unit id="quince.slider.opt.align_start">
+        <source>Left</source>
+        <target>Do lewej</target>
+      </trans-unit>
+      <trans-unit id="quince.slider.opt.align_center">
+        <source>Centred</source>
+        <target>Do środka</target>
+      </trans-unit>
+      <trans-unit id="quince.slider.opt.height_small">
+        <source>Low</source>
+        <target>Niska</target>
+      </trans-unit>
+      <trans-unit id="quince.slider.opt.height_medium">
+        <source>Medium</source>
+        <target>Średnia</target>
+      </trans-unit>
+      <trans-unit id="quince.slider.opt.height_large">
+        <source>Tall</source>
+        <target>Wysoka</target>
+      </trans-unit>
+      <trans-unit id="quince.slider.opt.width_full">
+        <source>Full width</source>
+        <target>Pełna szerokość</target>
+      </trans-unit>
+      <trans-unit id="quince.slider.opt.width_boxed">
+        <source>Page width</source>
+        <target>Szerokość strony</target>
+      </trans-unit>
+      <trans-unit id="quince.slider.opt.btn_primary">
+        <source>Filled</source>
+        <target>Wypełniony</target>
+      </trans-unit>
+      <trans-unit id="quince.slider.opt.btn_secondary">
+        <source>Outlined</source>
+        <target>Obrysowany</target>
+      </trans-unit>
+      <trans-unit id="quince.slider.opt.btn_quiet">
+        <source>Plain</source>
+        <target>Zwykły</target>
+      </trans-unit>
+      <trans-unit id="quince.slider.opt.source_text">
+        <source>Own text</source>
+        <target>Własny tekst</target>
+      </trans-unit>
+      <trans-unit id="quince.slider.opt.source_product">
+        <source>A product</source>
+        <target>Produkt</target>
+      </trans-unit>
+
+    </body>
+  </file>
+</xliff>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en-US" target-language="pl-PL" datatype="plaintext" original="ModulesQuincesliderShop">
+    <body>
+
+      <!-- Etykieta całego pasa dla czytników ekranu. -->
+      <trans-unit id="quince.slider.shop.region">
+        <source>Highlights</source>
+        <target>Wyróżnione</target>
+      </trans-unit>
+      <trans-unit id="quince.slider.shop.ends_in">
+        <source>Ends in</source>
+        <target>Do końca</target>
+      </trans-unit>
+      <trans-unit id="quince.slider.shop.prev">
+        <source>Previous slide</source>
+        <target>Poprzedni slajd</target>
+      </trans-unit>
+      <!-- Etykieta kropki, po niej numer slajdu. -->
+      <trans-unit id="quince.slider.shop.slide">
+        <source>Slide</source>
+        <target>Slajd</target>
+      </trans-unit>
+      <trans-unit id="quince.slider.shop.next">
+        <source>Next slide</source>
+        <target>Następny slajd</target>
+      </trans-unit>
+
+    </body>
+  </file>
+</xliff>
