@@ -1,0 +1,20 @@
+# Ekran slajdera.
+#
+# `_legacy_controller` wskazuje zakładkę silnika, bo moduł bez niego nie działa —
+# nie zakładamy własnej zakładki tylko po to, żeby PrestaShop miał gdzie sprawdzić
+# uprawnienia.
+quince_slider:
+  path: quince/slider
+  methods: [GET]
+  defaults:
+    _controller: Quince\Slider\Controller\Admin\SlidesController::indexAction
+    _legacy_controller: 'AdminQuince'
+    _legacy_link: 'AdminQuince'
+
+quince_slider_save:
+  path: quince/slider/save
+  methods: [POST]
+  defaults:
+    _controller: Quince\Slider\Controller\Admin\SlidesController::saveAction
+    _legacy_controller: 'AdminQuince'
+    _legacy_link: 'AdminQuince:save'

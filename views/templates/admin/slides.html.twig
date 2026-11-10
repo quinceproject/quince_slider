@@ -1,0 +1,482 @@
+{% extends '@Modules/quince_engine/views/templates/admin/layout.html.twig' %}
+{% import '@Modules/quince_engine/views/templates/admin/_macros/icons.html.twig' as icons %}
+{% import '@Modules/quince_engine/views/templates/admin/_macros/fields.html.twig' as fields %}
+
+{% trans_default_domain 'Modules.Quinceslider.Admin' %}
+
+{% block quince_actions %}
+    <button type="submit" form="quince-slider" class="qc-btn qc-btn-primary">
+        {{ icons.icon('check', 14) }} {{ 'Save changes'|trans }}
+    </button>
+{% endblock %}
+
+{% block quince_body %}
+{# Slajdy stoją na tym samym komponencie listy co bloki odnośników i sekcje
+   strony głównej: wiersz z chwytem, przełącznikiem i rozwinięciem.
+
+   Cała lista jedzie do serwera jednym polem ukrytym jako JSON, bo liczba
+   slajdów, pigułek i przycisków zmienia się przy każdym dołożeniu.
+
+   Projekt slajdu: `quince/makiety/strona-glowna.html`, komponent motywu:
+   `themes/quince/assets/css/components/slider.css`. #}
+
+<form id="quince-slider" method="post" action="{{ path('quince_slider_save') }}" x-data
+      data-quince-slider
+      data-languages="{{ languages|map(l => l.id_lang)|json_encode|e('html_attr') }}"
+      data-max-specs="{{ maxSpecs }}"
+      data-max-buttons="{{ maxButtons }}"
+      data-napisy="{{ {
+          noTitle: 'no heading'|trans,
+          slide: 'Slide'|trans,
+          specs: 'claims'|trans,
+          buttons: 'buttons'|trans,
+          video: 'video'|trans,
+          photo: 'photo'|trans,
+          gradient: 'gradient'|trans,
+          colour: 'colour'|trans,
+          panel: 'in a panel'|trans,
+          centred: 'centred'|trans,
+          withMedia: 'with a photo beside'|trans
+      }|json_encode|e('html_attr') }}">
+    <input type="hidden" name="_csrf_token" value="{{ csrf_token('quince_slider_save') }}">
+
+    <input type="hidden" name="SLIDES" value="">
+
+    <div class="qc-alert qc-alert-info">
+        {{ icons.icon('info', 18, 'qc-alert-icon') }}
+        <div>{{ 'A slide has three things that do not depend on each other: a background, a content layout and the content itself. The band appears wherever the home page puts the slider hook.'|trans }}</div>
+    </div>
+
+    {# ── ustawienia całego pasa ── #}
+    <div class="qc-card">
+        <div class="qc-card-head">
+            <div>
+                <div class="qc-card-title">{{ 'The band'|trans }}</div>
+            </div>
+        </div>
+
+        <div class="qc-card-body">
+            <div class="qc-form-grid qc-form-grid-3">
+                <div class="qc-field">
+                    <label class="qc-label">{{ 'Height'|trans }}</label>
+                    <div class="qc-seg qc-seg-wrap" data-pole="HEIGHT">
+                        {% for wartosc, etykieta in heights %}
+                            <button type="button" class="qc-seg-btn{{ settings.HEIGHT == wartosc ? ' is-active' }}"
+                                    data-wartosc="{{ wartosc }}">{{ etykieta|trans }}</button>
+                        {% endfor %}
+                    </div>
+                    <input type="hidden" name="HEIGHT" value="{{ settings.HEIGHT }}">
+                </div>
+
+                <div class="qc-field">
+                    <label class="qc-label">{{ 'Width'|trans }}</label>
+                    <div class="qc-seg qc-seg-wrap" data-pole="WIDTH">
+                        {% for wartosc, etykieta in widths %}
+                            <button type="button" class="qc-seg-btn{{ settings.WIDTH == wartosc ? ' is-active' }}"
+                                    data-wartosc="{{ wartosc }}">{{ etykieta|trans }}</button>
+                        {% endfor %}
+                    </div>
+                    <input type="hidden" name="WIDTH" value="{{ settings.WIDTH }}">
+                </div>
+
+                <div class="qc-field">
+                    <label class="qc-label">{{ 'Seconds per slide'|trans }}</label>
+                    <input type="number" class="qc-field-base qc-focusable" name="INTERVAL"
+                           style="inline-size:88px;text-align:center"
+                           value="{{ settings.INTERVAL }}" min="2" max="30" step="1">
+                    <div class="qc-hint">{{ 'Only matters when the band moves on its own.'|trans }}</div>
+                </div>
+            </div>
+
+            <div class="qc-form-grid qc-form-grid-3" style="margin-block-start:16px">
+                <div class="qc-field">
+                    {{ fields.toggle('AUTOPLAY', settings.AUTOPLAY == '1', 'Moves on its own'|trans) }}
+                </div>
+                <div class="qc-field">
+                    {{ fields.toggle('ARROWS', settings.ARROWS == '1', 'Arrows'|trans) }}
+                </div>
+                <div class="qc-field">
+                    {{ fields.toggle('DOTS', settings.DOTS == '1', 'Dots'|trans) }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {# ── slajdy ── #}
+    <div class="qc-card" style="margin-block-start:18px">
+        <div class="qc-card-head">
+            <div>
+                <div class="qc-card-title">{{ 'Slides'|trans }}</div>
+            </div>
+            <button type="button" class="qc-btn qc-btn-outline" data-dodaj-slajd>
+                {{ icons.icon('plus', 14) }} {{ 'Add a slide'|trans }}
+            </button>
+        </div>
+
+        <div class="qc-card-body">
+            <div class="qc-empty" data-pusto{{ slides|length ? ' hidden' : '' }}>
+                <div class="qc-empty-text" style="padding:14px">{{ 'No slides yet. The band stays hidden until you add one.'|trans }}</div>
+            </div>
+
+            <div class="qc-repeater" x-sort x-sort:group="slajdy" data-slajdy>
+                {% for slajd in slides %}
+                    {{ _self.slajd(slajd, loop.index, backgrounds, fades, layouts, alignments, buttonStyles, sources, languages) }}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    {# Wzory nowych pozycji. Rysuje je to samo makro, co pozycje zapisane. #}
+    <template data-wzor-slajdu>
+        {{ _self.slajd({}, 0, backgrounds, fades, layouts, alignments, buttonStyles, sources, languages) }}
+    </template>
+</form>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {# Paczka sortowania idzie PRZED Alpine: wtyczka musi się zarejestrować,
+       zanim Alpine ruszy, inaczej `x-sort` zostaje martwym atrybutem. #}
+    <script src="{{ asset('../modules/quince_engine/views/js/vendor/alpine-sort.min.js') ~ qcVer }}" defer></script>
+    <script src="{{ asset('../modules/quince_engine/views/js/vendor/alpine.min.js') ~ qcVer }}" defer></script>
+    <script src="{{ asset('../modules/quince_slider/views/js/slides.js') ~ qcVer }}" defer></script>
+{% endblock %}
+
+
+{# ───────────────────────────────────────────────────────────────────────
+   Jeden slajd: wiersz listy, a pod strzałką jego ustawienia w trzech krokach.
+   ─────────────────────────────────────────────────────────────────────── #}
+{% macro slajd(slajd, numer, backgrounds, fades, layouts, alignments, buttonStyles, sources, languages) %}
+    {% import '@Modules/quince_engine/views/templates/admin/_macros/icons.html.twig' as icons %}
+    {% import '@Modules/quince_engine/views/templates/admin/_macros/fields.html.twig' as fields %}
+    {% import _self as m %}
+
+    {% set tlo = slajd.background|default('solid') %}
+
+    <div class="qc-rep-row" data-slajd x-sort:item="'{{ slajd.id|default('slide') }}'">
+        <div class="qc-rep-row-head" data-pasek>
+            <span class="qc-rep-handle" x-sort:handle title="{{ 'Drag to reorder'|trans }}">{{ icons.icon('drag', 14) }}</span>
+
+            <span class="qc-rep-name">
+                <span data-nazwa>{{ 'Slide'|trans }} {{ numer }}</span>
+                <span class="qc-rep-sub" data-opis></span>
+            </span>
+
+            <div class="qc-rep-actions">
+                <span data-pole="active">{{ fields.toggle('', slajd.active|default(true)) }}</span>
+
+                <button type="button" class="qc-icon-btn" data-rozwin title="{{ 'Settings'|trans }}">
+                    {{ icons.icon('chevronDown', 14, 'qc-strzalka') }}
+                </button>
+
+                <button type="button" class="qc-icon-btn qc-danger" data-usun-slajd title="{{ 'Remove'|trans }}">
+                    {{ icons.icon('trash', 14) }}
+                </button>
+            </div>
+        </div>
+
+        <div class="qc-rep-body" hidden>
+            <input type="hidden" data-pole="id" value="{{ slajd.id|default('') }}">
+
+            {# ── krok 1: tło ── #}
+            <div class="qc-krok qc-krok--gotowy">
+                <span class="qc-krok-numer">1</span>
+                <div>
+                    <div class="qc-krok-tytul">{{ 'Background'|trans }}</div>
+                    <div class="qc-krok-opis">{{ 'A colour, a gradient, a photo or a video. Each one has its own fields.'|trans }}</div>
+
+                    <div class="qc-uklad">
+                        <div class="qc-uklad-pole">
+                            <span class="qc-label">{{ 'Kind'|trans }}</span>
+                            <div class="qc-seg qc-seg-wrap" data-pole="background">
+                                {% for wartosc, etykieta in backgrounds %}
+                                    <button type="button" class="qc-seg-btn{{ tlo == wartosc ? ' is-active' }}"
+                                            data-wartosc="{{ wartosc }}">{{ etykieta|trans }}</button>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <div class="qc-uklad-pole" data-gdy-tlo="solid photo"{{ tlo in ['solid', 'photo'] ? '' : ' hidden' }}>
+                            <span class="qc-label">{{ 'Colour'|trans }}</span>
+                            <input type="text" class="qc-field-base qc-focusable" data-pole="bg"
+                                   style="inline-size:150px" value="{{ slajd.bg|default('') }}" placeholder="primary-12">
+                            <span class="qc-hint">{{ 'A step of the shop palette (neutral, primary, secondary, promo) from 1 to 12, or a hex code.'|trans }}</span>
+                        </div>
+
+                        <div class="qc-uklad-pole" data-gdy-tlo="gradient"{{ tlo == 'gradient' ? '' : ' hidden' }}>
+                            <span class="qc-label">{{ 'From'|trans }}</span>
+                            <input type="text" class="qc-field-base qc-focusable" data-pole="from"
+                                   style="inline-size:150px" value="{{ slajd.from|default('') }}" placeholder="primary-8">
+                        </div>
+
+                        <div class="qc-uklad-pole" data-gdy-tlo="gradient"{{ tlo == 'gradient' ? '' : ' hidden' }}>
+                            <span class="qc-label">{{ 'To'|trans }}</span>
+                            <input type="text" class="qc-field-base qc-focusable" data-pole="to"
+                                   style="inline-size:150px" value="{{ slajd.to|default('') }}" placeholder="primary-12">
+                        </div>
+
+                        <div class="qc-uklad-pole" data-gdy-tlo="gradient"{{ tlo == 'gradient' ? '' : ' hidden' }}>
+                            <span class="qc-label">{{ 'Angle'|trans }}</span>
+                            <input type="number" class="qc-field-base qc-focusable" data-pole="angle"
+                                   style="inline-size:88px;text-align:center"
+                                   value="{{ slajd.angle|default(120) }}" min="0" max="360" step="5">
+                        </div>
+
+                        <div class="qc-uklad-pole" data-gdy-tlo="photo"{{ tlo == 'photo' ? '' : ' hidden' }}>
+                            <span class="qc-label">{{ 'Photo'|trans }}</span>
+                            <input type="text" class="qc-field-base qc-focusable" data-pole="image"
+                                   style="inline-size:280px" value="{{ slajd.image|default('') }}" placeholder="/img/cms/slide.jpg">
+                        </div>
+
+                        {# Zdjęcie dochodzące ostrą krawędzią do brzegu pasa wygląda
+                           jak wklejone, więc da się je wtopić w tło sekcji. #}
+                        <div class="qc-uklad-pole" data-gdy-tlo="photo"{{ tlo == 'photo' ? '' : ' hidden' }}>
+                            <span class="qc-label">{{ 'Fade the edge'|trans }}</span>
+                            <div class="qc-select-wrap">
+                                <select class="qc-field-base qc-select qc-focusable" data-pole="fade">
+                                    {% for wartosc, etykieta in fades %}
+                                        <option value="{{ wartosc }}"{{ slajd.fade|default('none') == wartosc ? ' selected' : '' }}>{{ etykieta|trans }}</option>
+                                    {% endfor %}
+                                </select>
+                                {{ icons.icon('chevronDown', 14, 'qc-select-chevron') }}
+                            </div>
+                        </div>
+
+                        <div class="qc-uklad-pole" data-gdy-tlo="video"{{ tlo == 'video' ? '' : ' hidden' }}>
+                            <span class="qc-label">{{ 'Video address'|trans }}</span>
+                            <input type="text" class="qc-field-base qc-focusable" data-pole="video"
+                                   style="inline-size:280px" value="{{ slajd.video|default('') }}"
+                                   placeholder="https://www.youtube.com/watch?v=…">
+                            <span class="qc-hint">{{ 'A normal YouTube or Vimeo link. The shop turns it into a muted background video.'|trans }}</span>
+                        </div>
+
+                        <div class="qc-uklad-pole" data-gdy-tlo="video"{{ tlo == 'video' ? '' : ' hidden' }}>
+                            <span class="qc-label">{{ 'Still image'|trans }}</span>
+                            <input type="text" class="qc-field-base qc-focusable" data-pole="poster"
+                                   style="inline-size:280px" value="{{ slajd.poster|default('') }}" placeholder="/img/cms/poster.jpg">
+                            <span class="qc-hint">{{ 'Shown while the video loads.'|trans }}</span>
+                        </div>
+
+                        <div class="qc-uklad-pole">
+                            <span class="qc-label">{{ 'Veil'|trans }}</span>
+                            <span data-pole="shade">{{ fields.toggle('', slajd.shade|default(false), 'Darken the whole slide'|trans) }}</span>
+                            <span class="qc-hint">{{ 'For a photo that fights with the text.'|trans }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {# ── krok 2: treść ── #}
+            <div class="qc-krok qc-krok--gotowy">
+                <span class="qc-krok-numer">2</span>
+                <div>
+                    <div class="qc-krok-tytul">{{ 'Content'|trans }}</div>
+                    <div class="qc-krok-opis">{{ 'A slide can promote a product from the catalogue or say something of its own.'|trans }}</div>
+
+                    {# Slajd o produkcie nie powtarza jego nazwy, ceny i zdjęcia:
+                       wszystko to jest w katalogu i zmienia się razem z nim. #}
+                    <div class="qc-uklad">
+                        <div class="qc-uklad-pole">
+                            <span class="qc-label">{{ 'Content from'|trans }}</span>
+                            <div class="qc-seg qc-seg-wrap" data-pole="source">
+                                {% for wartosc, etykieta in sources %}
+                                    <button type="button" class="qc-seg-btn{{ slajd.source|default('text') == wartosc ? ' is-active' }}"
+                                            data-wartosc="{{ wartosc }}">{{ etykieta|trans }}</button>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <div class="qc-uklad-pole" data-gdy-zrodlo="product"{{ slajd.source|default('text') == 'product' ? '' : ' hidden' }}>
+                            <span class="qc-label">{{ 'Product id'|trans }}</span>
+                            <input type="number" class="qc-field-base qc-focusable" data-pole="product"
+                                   style="inline-size:120px" value="{{ slajd.product|default(0) }}" min="0" step="1">
+                            <span class="qc-hint">{{ 'Name, sentence, price, photo and the button address come from the catalogue.'|trans }}</span>
+                        </div>
+
+                        {# Nadpisanie jest wyjątkiem, więc stoi jako jeden
+                           przełącznik, a nie jako sześć pustych pól czekających
+                           na przepisanie tego, co i tak jest w katalogu. #}
+                        <div class="qc-uklad-pole" data-gdy-zrodlo="product"{{ slajd.source|default('text') == 'product' ? '' : ' hidden' }}>
+                            <span class="qc-label">{{ 'Catalogue text'|trans }}</span>
+                            <span data-pole="override">{{ fields.toggle('', false, 'Say it differently on this slide'|trans) }}</span>
+                        </div>
+                    </div>
+
+                    <div class="qc-uklad">
+                        <div data-pole="over">{{ fields.multilang('', 'Overline'|trans, languages, slajd.over|default({})) }}</div>
+                        <div data-pole="title" style="flex:1 1 320px" data-z-katalogu>{{ fields.multilang('', 'Heading'|trans, languages, slajd.title|default({})) }}</div>
+                    </div>
+
+                    {# Zdanie bywa dwa wiersze, a nie dwa słowa, więc dostaje pole
+                       wielowierszowe. #}
+                    <div class="qc-uklad">
+                        <div data-pole="text" style="flex:1 1 100%" data-z-katalogu>
+                            {{ fields.multilangArea('', 'Sentence'|trans, languages, slajd.text|default({}), '', '', 3) }}
+                        </div>
+                    </div>
+
+                    <div class="qc-uklad">
+                        <div class="qc-uklad-pole" data-z-katalogu>
+                            <span class="qc-label">{{ 'Price'|trans }}</span>
+                            <input type="text" class="qc-field-base qc-focusable" data-pole="price_now"
+                                   style="inline-size:150px" value="{{ slajd.price_now|default('') }}" placeholder="1 240,00 zł">
+                        </div>
+
+                        <div class="qc-uklad-pole" data-z-katalogu>
+                            <span class="qc-label">{{ 'Price before'|trans }}</span>
+                            <input type="text" class="qc-field-base qc-focusable" data-pole="price_was"
+                                   style="inline-size:150px" value="{{ slajd.price_was|default('') }}" placeholder="1 490,00 zł">
+                        </div>
+
+                        {# Licznik gaśnie sam po terminie, więc data jest jedynym
+                           ustawieniem, jakiego potrzebuje. #}
+                        <div class="qc-uklad-pole">
+                            <span class="qc-label">{{ 'Counts down to'|trans }}</span>
+                            <input type="datetime-local" class="qc-field-base qc-focusable" data-pole="timer_to"
+                                   style="inline-size:220px" value="{{ slajd.timer_to|default('')|replace({' ': 'T'}) }}">
+                        </div>
+                    </div>
+
+                    {# Pigułki i przyciski to listy, więc każda dostaje własną ramkę
+                       z nagłówkiem i przyciskiem dokładania w środku — inaczej
+                       nagłówek wisiał nad pustką, a przycisk stał pod nią luzem. #}
+                    <div class="qc-uklad" style="display:block">
+                        <span class="qc-label">{{ 'Short claims'|trans }}</span>
+
+                        <div class="qc-repeater" data-pigulki>
+                            {% for pigulka in slajd.specs|default([]) %}
+                                {{ m.pigulka(pigulka, languages) }}
+                            {% endfor %}
+                        </div>
+
+                        <div class="qc-dodaj">
+                            <span class="qc-dodaj-napis" data-pigulki-licznik></span>
+                            <button type="button" class="qc-btn qc-btn-outline" data-dodaj-pigulke>{{ 'Add a claim'|trans }}</button>
+                        </div>
+                    </div>
+
+                    <div class="qc-uklad" style="display:block">
+                        <span class="qc-label">{{ 'Buttons'|trans }}</span>
+
+                        <div class="qc-repeater" data-przyciski>
+                            {% for przycisk in slajd.buttons|default([]) %}
+                                {{ m.przycisk(przycisk, buttonStyles, languages) }}
+                            {% endfor %}
+                        </div>
+
+                        <div class="qc-dodaj">
+                            <span class="qc-dodaj-napis" data-przyciski-licznik></span>
+                            <button type="button" class="qc-btn qc-btn-outline" data-dodaj-przycisk>{{ 'Add a button'|trans }}</button>
+                        </div>
+                    </div>
+
+                    <template data-wzor-pigulki>{{ m.pigulka({}, languages) }}</template>
+                    <template data-wzor-przycisku>{{ m.przycisk({}, buttonStyles, languages) }}</template>
+                </div>
+            </div>
+
+            {# ── krok 3: ułożenie ── #}
+            <div class="qc-krok qc-krok--gotowy">
+                <span class="qc-krok-numer">3</span>
+                <div>
+                    <div class="qc-krok-tytul">{{ 'Layout'|trans }}</div>
+                    <div class="qc-krok-opis">{{ 'Where the content sits and how it is aligned. Independent of the background.'|trans }}</div>
+
+                    <div class="qc-uklad">
+                        <div class="qc-uklad-pole">
+                            <span class="qc-label">{{ 'Content'|trans }}</span>
+                            <div class="qc-seg qc-seg-wrap" data-pole="layout">
+                                {% for wartosc, etykieta in layouts %}
+                                    <button type="button" class="qc-seg-btn{{ slajd.layout|default('full') == wartosc ? ' is-active' }}"
+                                            data-wartosc="{{ wartosc }}">{{ etykieta|trans }}</button>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <div class="qc-uklad-pole">
+                            <span class="qc-label">{{ 'Aligned'|trans }}</span>
+                            <div class="qc-seg qc-seg-wrap" data-pole="align">
+                                {% for wartosc, etykieta in alignments %}
+                                    <button type="button" class="qc-seg-btn{{ slajd.align|default('start') == wartosc ? ' is-active' }}"
+                                            data-wartosc="{{ wartosc }}">{{ etykieta|trans }}</button>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <div class="qc-uklad-pole">
+                            <span class="qc-label">{{ 'Text'|trans }}</span>
+                            <span data-pole="light">{{ fields.toggle('', slajd.light|default(false), 'Light, for a dark background'|trans) }}</span>
+                        </div>
+
+                        <div class="qc-uklad-pole" data-z-katalogu>
+                            <span class="qc-label">{{ 'Photo beside the text'|trans }}</span>
+                            <input type="text" class="qc-field-base qc-focusable" data-pole="media"
+                                   style="inline-size:260px" value="{{ slajd.media|default('') }}" placeholder="/img/cms/product.png">
+                            <span class="qc-hint">{{ 'Leave it empty and the text takes the whole slide.'|trans }}</span>
+                        </div>
+
+                        <div class="qc-uklad-pole" data-gdy-media{{ slajd.media|default('') ? '' : ' hidden' }}>
+                            <span class="qc-label">{{ 'Photo takes'|trans }}</span>
+                            <input type="number" class="qc-field-base qc-focusable" data-pole="media_share"
+                                   style="inline-size:88px;text-align:center"
+                                   value="{{ slajd.media_share|default(40) }}" min="20" max="60" step="5">
+                            <span class="qc-hint">{{ 'percent of the slide'|trans }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endmacro %}
+
+
+{# Jedna pigułka: krótki napis pod zdaniem. #}
+{% macro pigulka(pigulka, languages) %}
+    {% import '@Modules/quince_engine/views/templates/admin/_macros/icons.html.twig' as icons %}
+    {% import '@Modules/quince_engine/views/templates/admin/_macros/fields.html.twig' as fields %}
+
+    <div class="qc-rep-row" data-pigulka>
+        <div class="qc-uklad" style="margin:0;border:0;box-shadow:none;background:none;padding:var(--space-2)">
+            <div data-pole="spec">{{ fields.multilang('', '', languages, pigulka) }}</div>
+
+            <button type="button" class="qc-icon-btn qc-danger" data-usun-pigulke
+                    style="align-self:center" title="{{ 'Remove'|trans }}">
+                {{ icons.icon('trash', 14) }}
+            </button>
+        </div>
+    </div>
+{% endmacro %}
+
+
+{# Jeden przycisk: napis, adres i postać. #}
+{% macro przycisk(przycisk, buttonStyles, languages) %}
+    {% import '@Modules/quince_engine/views/templates/admin/_macros/icons.html.twig' as icons %}
+    {% import '@Modules/quince_engine/views/templates/admin/_macros/fields.html.twig' as fields %}
+
+    <div class="qc-rep-row" data-przycisk>
+        <div class="qc-uklad" style="margin:0;border:0;box-shadow:none;background:none;padding:var(--space-2)">
+            <div data-pole="label">{{ fields.multilang('', 'Label'|trans, languages, przycisk.label|default({})) }}</div>
+
+            <div class="qc-uklad-pole" data-z-katalogu>
+                <span class="qc-label">{{ 'Address'|trans }}</span>
+                <input type="text" class="qc-field-base qc-focusable" data-pole="url"
+                       style="inline-size:240px" value="{{ przycisk.url|default('') }}" placeholder="https://">
+            </div>
+
+            <div class="qc-uklad-pole">
+                <span class="qc-label">{{ 'Style'|trans }}</span>
+                <div class="qc-seg qc-seg-wrap" data-pole="style">
+                    {% for wartosc, etykieta in buttonStyles %}
+                        <button type="button" class="qc-seg-btn{{ przycisk.style|default('primary') == wartosc ? ' is-active' }}"
+                                data-wartosc="{{ wartosc }}">{{ etykieta|trans }}</button>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <button type="button" class="qc-icon-btn qc-danger" data-usun-przycisk
+                    style="align-self:end;margin-block-end:4px" title="{{ 'Remove'|trans }}">
+                {{ icons.icon('trash', 14) }}
+            </button>
+        </div>
+    </div>
+{% endmacro %}
