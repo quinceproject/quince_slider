@@ -27,6 +27,10 @@ name, price and photo come straight from the catalogue.
   the short description, the price with tax in the visitor's currency, the price
   before a reduction, the cover photo and the button address come from the catalogue
   and follow it when it changes. Anything typed by hand stays as typed.
+- **Countdown.** Give a slide an end date and it shows the days, hours and minutes
+  left, in the corner of the slide on wide screens and above the content on narrow
+  ones. It hides itself when the date passes. The counting is done by the Quince
+  theme, the same countdown as on product promotions.
 - **Layout.** Content across the slide or in a panel at the edge, aligned left or
   centred, with or without a photo beside the text.
 - **The band.** Low, medium or tall, across the whole window or within the page

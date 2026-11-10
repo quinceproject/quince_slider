@@ -56,6 +56,21 @@
                             frameborder="0" allow="autoplay; encrypted-media" tabindex="-1"></iframe>
                 {/if}
 
+                {* Licznik stoi bezpośrednio w slajdzie, przed treścią: na szerokim
+                   ekranie w rogu slajdu, na wąskim nad treścią. Odlicza go skrypt
+                   motywu `countdown.js` (ten sam co przy promocjach produktu) i chowa
+                   po terminie. Termin, który już minął, nie trafia na stronę wcale. *}
+                {if $slide.timer_to && ($slide.timer_to|qstamp) > $smarty.now}
+                    <div class="q-slider__timer" data-q-countdown="{$slide.timer_to|qstamp}">
+                        <span class="q-slider__timer-label">{l s='Ends in' d='Modules.Quinceslider.Shop'}</span>
+                        <div class="q-slider__timer-parts">
+                            <span class="q-slider__timer-part"><span class="q-slider__timer-num" data-q-countdown-days>0</span><span class="q-slider__timer-unit">{l s='days' d='Shop.Theme.Global'}</span></span>
+                            <span class="q-slider__timer-part"><span class="q-slider__timer-num" data-q-countdown-hours>00</span><span class="q-slider__timer-unit">{l s='hrs' d='Shop.Theme.Global'}</span></span>
+                            <span class="q-slider__timer-part"><span class="q-slider__timer-num" data-q-countdown-minutes>00</span><span class="q-slider__timer-unit">{l s='min' d='Shop.Theme.Global'}</span></span>
+                        </div>
+                    </div>
+                {/if}
+
                 {if $slide.layout == 'split'}<div class="q-slider__panel">{/if}
 
                 <div class="q-slider__inner">
@@ -97,12 +112,6 @@
                                            href="{$button.url|escape:'html':'UTF-8'}">{$button.label|escape:'html':'UTF-8'}</a>
                                     {/foreach}
                                 </div>
-                            {/if}
-
-                            {* Licznik odlicza do terminu i gaśnie sam, gdy ten minie —
-                               resztę robi skrypt motywu. *}
-                            {if $slide.timer_to}
-                                <div class="q-slider__timer" data-q-slider-timer="{$slide.timer_to|escape:'html':'UTF-8'}"></div>
                             {/if}
                         </div>
                     </div>
