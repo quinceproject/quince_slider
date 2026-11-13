@@ -18,7 +18,7 @@ require_once __DIR__ . '/vendor/autoload.php';
 use Quince\Slider\Settings\Slides;
 
 /**
- * Quince Slider — pas zapowiedzi na górze strony.
+ * Quince Slider: pas zapowiedzi na górze strony.
  *
  * Slajd nie wie, gdzie stanie: moduł wystawia hook `displayQuinceHomeSlider`,
  * a strona główna silnika wstawia go w kolumnę sekcji. Dzięki temu slajder da
@@ -90,7 +90,7 @@ class Quince_Slider extends Module
      *
      * `Hook::add()` musi pójść PRZED rejestracją: PrestaShop nie zakłada
      * wpisu w `ps_hook` sam, a rejestracja na nieistniejący hook kończy się
-     * ciszą — moduł jest zainstalowany, a na stronie nie ma nic.
+     * ciszą: moduł jest zainstalowany, a na stronie nie ma nic.
      */
     private function registerSliderHook(): bool
     {
@@ -190,7 +190,7 @@ class Quince_Slider extends Module
     /**
      * Slajd o produkcie: puste pola wypełnia katalog.
      *
-     * Wpisane ręcznie zostaje nietknięte — sklep bywa, że chce powiedzieć
+     * Wpisane ręcznie zostaje nietknięte: sklep bywa, że chce powiedzieć
      * „Zestaw dla warsztatu" zamiast pełnej nazwy katalogowej. Reszta idzie
      * za produktem, więc zmiana ceny w katalogu jest widoczna na slajdzie bez
      * wchodzenia tutaj.
@@ -263,7 +263,7 @@ class Quince_Slider extends Module
     /**
      * Adres osadzenia filmu.
      *
-     * Sklep wkleja zwykły odnośnik z YouTube albo Vimeo, a nie adres ramki —
+     * Sklep wkleja zwykły odnośnik z YouTube albo Vimeo, a nie adres ramki;
      * tego drugiego nie ma skąd wziąć bez wchodzenia w kod strony. Parametry
      * wyciszają film i gaszą sterowanie: slajd jest tłem, nie odtwarzaczem.
      */

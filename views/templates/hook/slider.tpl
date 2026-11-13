@@ -1,5 +1,5 @@
 {**
- * Quince — pas zapowiedzi.
+ * Quince: pas zapowiedzi.
  *
  * Wygląd należy do motywu: `themes/quince/assets/css/components/slider.css`.
  * Ten plik wyłącznie układa klasy i zmienne, które komponent rozumie, więc
@@ -78,7 +78,7 @@
 
                         {if $slide.media}
                             {* Zdjęcie obok treści niesie przekaz razem z nią, więc nie jest
-                               tłem — zostaje osobnym obrazem z pustym opisem, bo nagłówek
+                               tłem. Zostaje osobnym obrazem z pustym opisem, bo nagłówek
                                slajdu mówi to samo. *}
                             <div class="q-slider__media">
                                 <img src="{$slide.media|escape:'html':'UTF-8'}" alt="" loading="lazy">

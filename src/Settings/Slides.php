@@ -25,7 +25,7 @@ use Quince\Engine\Settings\ConfigStore;
  * Slajd składa się z trzech rzeczy niezależnych od siebie:
  *
  *   TŁO       barwa, gradient, zdjęcie albo film. Zdjęcie dostaje wtopienia
- *             przy krawędziach, film — planszę na czas wczytywania.
+ *             przy krawędziach, film planszę na czas wczytywania.
  *   TREŚĆ     nagłówek, zdanie, pigułki, cena, przyciski, licznik. Każde
  *             z osobna, bo slajd zapowiadający promocję ma cenę i licznik,
  *             a slajd marki ani jednego, ani drugiego.
@@ -33,7 +33,7 @@ use Quince\Engine\Settings\ConfigStore;
  *             na środku, ze zdjęciem obok treści albo bez.
  *
  * Zapis idzie w JSON jednym kluczem, bo liczba slajdów zmienia się przy każdym
- * dołożeniu — tak samo jak sekcje strony głównej.
+ * dołożeniu, tak samo jak sekcje strony głównej.
  */
 final class Slides
 {

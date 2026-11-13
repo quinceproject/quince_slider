@@ -21,7 +21,7 @@ use Symfony\Component\HttpFoundation\Response;
  * Slajder.
  *
  * Dziedziczy po klasie z silnika, więc ekran dostaje ten sam sidebar, pasek
- * zapisu i wygląd co reszta panelu Quince — bez kopiowania czegokolwiek.
+ * zapisu i wygląd co reszta panelu Quince.
  *
  * Lista slajdów stoi na tym samym komponencie co bloki odnośników i sekcje
  * strony głównej: wiersz z chwytem, przełącznikiem i rozwinięciem.
@@ -42,7 +42,7 @@ class SlidesController extends QuinceController
             'slides' => $this->slides->all(),
             'settings' => $this->slides->settings(),
 
-            // Słowniki do kontrolek. Ekran nie zna wartości na pamięć — bierze
+            // Słowniki do kontrolek. Ekran nie zna wartości na pamięć: bierze
             // je stąd, więc dołożenie rodzaju tła pokazuje się w panelu bez
             // ruszania szablonu ani skryptu.
             'sources' => Slides::SOURCES,

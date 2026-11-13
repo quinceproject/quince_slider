@@ -1,5 +1,5 @@
 /**
- * Ekran „Slajder" — to, czego nie obsługuje sam znacznik.
+ * Ekran „Slajder": to, czego nie obsługuje sam znacznik.
  *
  * Slajdy stoją w stronie jako gotowy znacznik z Twiga, a kolejność zmienia
  * Alpine (`x-sort`). Skrypt robi cztery rzeczy:
@@ -101,8 +101,7 @@
         });
 
         /* Pola, które przy produkcie przychodzą z katalogu, znikają z ekranu.
-           Wracają dopiero po włączeniu nadpisania — jedno kliknięcie zamiast
-           sześciu pustych pól proszących o przepisanie tego, co już jest. */
+           Wracają dopiero po włączeniu nadpisania. */
         var nadpisuje = zrodlo === 'text' || zaznaczony(pole(slajd, 'override'));
 
         slajd.querySelectorAll('[data-z-katalogu]').forEach(function (blok) {
