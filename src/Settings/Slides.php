@@ -317,7 +317,7 @@ final class Slides
 
         if ($tlo === self::BG_PHOTO) {
             return [
-                'image' => trim((string) ($wpis['image'] ?? '')),
+                'image' => self::adresObrazu((string) ($wpis['image'] ?? '')),
                 'fade' => $this->jednaZ($wpis['fade'] ?? '', self::FADES, 'none'),
                 'bg' => $this->barwa((string) ($wpis['bg'] ?? '')),
             ];
@@ -328,7 +328,7 @@ final class Slides
                 // Adres z YouTube albo Vimeo. Osadzenie składa szablon, bo to
                 // on wie, jakich parametrów potrzebuje odtwarzacz.
                 'video' => trim((string) ($wpis['video'] ?? '')),
-                'poster' => trim((string) ($wpis['poster'] ?? '')),
+                'poster' => self::adresObrazu((string) ($wpis['poster'] ?? '')),
             ];
         }
 
@@ -386,7 +386,7 @@ final class Slides
             }
 
             $napis = $this->i18n($przycisk['label'] ?? []);
-            $adres = trim((string) ($przycisk['url'] ?? ''));
+            $adres = self::adresLinku((string) ($przycisk['url'] ?? ''));
 
             if ($napis === [] || ($adres === '' && $zrodlo !== self::SOURCE_PRODUCT)) {
                 continue;
@@ -484,6 +484,58 @@ final class Slides
         $czysty = preg_replace('/[^a-z0-9_-]/', '', strtolower($wartosc));
 
         return $czysty !== '' ? $czysty : $zapas;
+    }
+
+    /**
+     * Adres przycisku: http(s), mailto, tel albo adres względny. Inny schemat
+     * (`javascript:`, `data:`) trafiłby wprost do `href` i wykonał się
+     * u klikającego klienta. Encje i znaki sterujące usuwamy tylko na czas
+     * sprawdzenia, bo przeglądarka też je pomija, czytając schemat.
+     */
+    private static function adresLinku(string $adres): string
+    {
+        $adres = trim($adres);
+        $doSprawdzenia = preg_replace('/[\x00-\x20\x7F]+/', '', html_entity_decode($adres, ENT_QUOTES | ENT_HTML5, 'UTF-8')) ?? '';
+
+        if ($doSprawdzenia === '') {
+            return '';
+        }
+
+        if (preg_match('/^([a-z][a-z0-9+.-]*):/i', $doSprawdzenia, $schemat) === 1) {
+            return in_array(strtolower($schemat[1]), ['http', 'https', 'mailto', 'tel'], true) ? $adres : '';
+        }
+
+        return $adres;
+    }
+
+    /**
+     * Adres zdjęcia tła: http(s) albo względny. Szablon wstawia go do
+     * `url('...')` w atrybucie `style`, więc cudzysłów, nawias, ukośnik
+     * wsteczny czy spacja pozwoliłyby dopisać własny CSS. Takiego adresu
+     * nie przyjmujemy wcale, zamiast go poprawiać.
+     */
+    private static function adresObrazu(string $adres): string
+    {
+        $adres = trim(html_entity_decode($adres, ENT_QUOTES | ENT_HTML5, 'UTF-8'));
+
+        if ($adres === '' || preg_match('/[\x00-\x1F\x7F]/', $adres) === 1) {
+            return '';
+        }
+
+        // Adres trafia do `url('...')` w atrybucie style. Znaki, którymi da się
+        // z niego wyjść, kodujemy procentowo zamiast odrzucać: plik nazwany
+        // „zdjecie (1).jpg” dalej się wyświetla, a `')` nie zamknie wyrażenia.
+        $adres = strtr($adres, [
+            ' ' => '%20', "'" => '%27', '"' => '%22', '(' => '%28', ')' => '%29',
+            '\\' => '%5C', '<' => '%3C', '>' => '%3E',
+        ]);
+        $doSprawdzenia = $adres;
+
+        if (preg_match('/^([a-z][a-z0-9+.-]*):/i', $doSprawdzenia, $schemat) === 1) {
+            return in_array(strtolower($schemat[1]), ['http', 'https'], true) ? $adres : '';
+        }
+
+        return $adres;
     }
 
     /**
