@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 namespace Quince\Slider\Controller\Admin;
 
+use PrestaShopBundle\Security\Attribute\AdminSecurity;
 use Quince\Engine\Controller\Admin\QuinceController;
 use Quince\Slider\Settings\Slides;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -32,6 +33,7 @@ class SlidesController extends QuinceController
     {
     }
 
+    #[AdminSecurity("is_granted('read', request.get('_legacy_controller'))", message: 'You do not have permission to view this.')]
     public function indexAction(): Response
     {
         return $this->renderPanel('@Modules/quince_slider/views/templates/admin/slides.html.twig', [
@@ -60,6 +62,7 @@ class SlidesController extends QuinceController
         ]);
     }
 
+    #[AdminSecurity("is_granted('update', request.get('_legacy_controller'))", message: 'You do not have permission to change this.')]
     public function saveAction(Request $request): RedirectResponse
     {
         if (!$this->isCsrfTokenValid('quince_slider_save', $request->request->get('_csrf_token'))) {

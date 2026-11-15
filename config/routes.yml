@@ -1,14 +1,14 @@
 # Ekran slajdera.
 #
-# `_legacy_controller` wskazuje zakładkę silnika, bo moduł bez niego nie działa.
-# Moduł nie ma własnej zakładki, więc PrestaShop sprawdza uprawnienia na
-# zakładce silnika.
+# `_legacy_controller` wskazuje własną zakładkę modułu (`AdminQuinceSlider`).
+# Do niej odnoszą się uprawnienia pracownika: atrybuty `#[AdminSecurity]`
+# w kontrolerach sprawdzają prawa do tej zakładki.
 quince_slider:
   path: quince/slider
   methods: [GET]
   defaults:
     _controller: Quince\Slider\Controller\Admin\SlidesController::indexAction
-    _legacy_controller: 'AdminQuince'
+    _legacy_controller: 'AdminQuinceSlider'
     _legacy_link: 'AdminQuince'
 
 quince_slider_save:
@@ -16,5 +16,5 @@ quince_slider_save:
   methods: [POST]
   defaults:
     _controller: Quince\Slider\Controller\Admin\SlidesController::saveAction
-    _legacy_controller: 'AdminQuince'
+    _legacy_controller: 'AdminQuinceSlider'
     _legacy_link: 'AdminQuince:save'
