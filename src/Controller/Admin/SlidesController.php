@@ -11,6 +11,10 @@ declare(strict_types=1);
 
 namespace Quince\Slider\Controller\Admin;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 use PrestaShopBundle\Security\Attribute\AdminSecurity;
 use Quince\Engine\Controller\Admin\QuinceController;
 use Quince\Slider\Settings\Slides;
